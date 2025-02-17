@@ -1,7 +1,6 @@
 package kr.tpmc.shop;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.inventory.ItemStack;
 
 public interface Shop {
     ShopItem getItem(int x, int y);

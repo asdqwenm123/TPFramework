@@ -1,7 +1,6 @@
 package kr.tpmc.shop;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
