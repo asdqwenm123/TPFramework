@@ -1,19 +1,35 @@
 plugins {
     id("java")
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("com.gradleup.shadow") version "9.0.0-beta8"
 }
 
-group = "kr.tpmc"
-version = "1.0-SNAPSHOT"
+allprojects {
+    apply(plugin = "java")
+    apply(plugin = "io.papermc.paperweight.userdev")
 
-repositories {
-    mavenCentral()
+    group = "kr.tpmc"
+    version = "1.0-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
+    }
+
+    tasks.assemble {
+        dependsOn(tasks.reobfJar)
+    }
+
 }
 
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+subprojects {
+    apply(plugin = "java")
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks.jar {
+    from(project(":api").sourceSets.main.get().output)
+    from(project(":core").sourceSets.main.get().output)
 }
