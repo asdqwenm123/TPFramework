@@ -23,8 +23,7 @@ public class ShopItemLocation {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ShopItemLocation) {
-            ShopItemLocation other = (ShopItemLocation) obj;
+        if (obj instanceof ShopItemLocation other) {
             return x == other.getX() && y == other.getY();
         }
         return false;
