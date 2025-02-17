@@ -32,4 +32,5 @@ subprojects {
 tasks.jar {
     from(project(":api").sourceSets.main.get().output)
     from(project(":core").sourceSets.main.get().output)
+    from(project(":plugin").sourceSets.main.get().output)
 }

@@ -10,4 +10,9 @@ public interface ShopManager {
     Shop getShop(String name);
     Shop getShop(Component name);
     Shop getShop(int id);
+
+    void removeShop(Shop shop);
+    void removeShop(int id);
+    void removeShop(Component name);
+    void removeShop(String name);
 }
