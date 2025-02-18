@@ -48,6 +48,11 @@ public class IShop implements Shop {
     }
 
     @Override
+    public ShopItem getItem(int index) {
+        return getItem(index / 9, index % 9);
+    }
+
+    @Override
     public void setItem(int x, int y, ShopItem item) {
         if (x >= 9) {
             throw new ShopException("x가 9 이상 되면 안 됩니다.");

@@ -15,4 +15,9 @@ public interface ShopManager {
     void removeShop(int id);
     void removeShop(Component name);
     void removeShop(String name);
+
+    boolean containsShop(Shop shop);
+    boolean containsShop(Component name);
+    boolean containsShop(int id);
+    boolean containsShop(String name);
 }

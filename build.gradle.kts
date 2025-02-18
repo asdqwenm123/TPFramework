@@ -1,7 +1,6 @@
 plugins {
     id("java")
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
-    id("com.gradleup.shadow") version "9.0.0-beta8"
 }
 
 allprojects {
@@ -22,7 +21,6 @@ allprojects {
     tasks.assemble {
         dependsOn(tasks.reobfJar)
     }
-
 }
 
 subprojects {

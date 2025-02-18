@@ -75,4 +75,24 @@ public class IShopManager implements ShopManager {
     public void removeShop(String name) {
         shops.remove(getShop(name));
     }
+
+    @Override
+    public boolean containsShop(Shop shop) {
+        return shops.contains(shop);
+    }
+
+    @Override
+    public boolean containsShop(Component name) {
+        return getShop(name) != null;
+    }
+
+    @Override
+    public boolean containsShop(int id) {
+        return getShop(id) != null;
+    }
+
+    @Override
+    public boolean containsShop(String name) {
+        return getShop(name) != null;
+    }
 }
