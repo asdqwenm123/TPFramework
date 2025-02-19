@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+//db 만들었기때문에 갈아엎어야함 ㅅㅂ
 public class IShopItem implements ShopItem {
     private final Component name;
     private final ItemStack item;

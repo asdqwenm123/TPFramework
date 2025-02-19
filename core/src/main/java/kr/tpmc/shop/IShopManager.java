@@ -1,10 +1,12 @@
 package kr.tpmc.shop;
 
+import kr.tpmc.exception.ShopException;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
+//db 만들었기때문에 갈아엎어야함 ㅅㅂ
 public class IShopManager implements ShopManager {
     private static final IShopManager instance = new IShopManager();
     private static final ArrayList<Shop> shops = new ArrayList<>();

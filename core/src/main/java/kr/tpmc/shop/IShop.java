@@ -1,9 +1,11 @@
 package kr.tpmc.shop;
 
+import kr.tpmc.exception.ShopException;
 import net.kyori.adventure.text.Component;
 
 import java.util.HashMap;
 
+//db 만들었기때문에 갈아엎어야함 ㅅㅂ
 public class IShop implements Shop {
     private final Component name;
     private final int line;

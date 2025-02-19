@@ -1,19 +1,16 @@
-package kr.tpmc.loader;
+package kr.tpmc.db;
 
 import jakarta.persistence.Entity;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.jar.JarFile;
 
-public class TPFrameworkLoader {
-
-    private TPFrameworkLoader() {}
+public class EntityLoader {
+    private EntityLoader() {}
 
     public static void onEnable(Plugin plugin) {
         String mainClass = plugin.getPluginMeta().getMainClass();
@@ -34,12 +31,8 @@ public class TPFrameworkLoader {
                             try {
                                 String className = entry.getName().replace('/', '.').replace(".class", "");
                                 Class<?> clazz = Class.forName(className);
-                                if (Arrays.stream(clazz.getInterfaces()).toList().contains(Listener.class)) {
-                                    for (Method method : clazz.getDeclaredMethods()) {
-                                        if (method.isAnnotationPresent(EventHandler.class)) {
-                                            Bukkit.getPluginManager().registerEvents((Listener) clazz.getConstructor().newInstance(), plugin);
-                                        }
-                                    }
+                                if (clazz.isAnnotationPresent(Entity.class)) {
+                                    HibernateUtil.entities.add(clazz);
                                 }
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
@@ -51,5 +44,3 @@ public class TPFrameworkLoader {
         }
     }
 }
-
-
