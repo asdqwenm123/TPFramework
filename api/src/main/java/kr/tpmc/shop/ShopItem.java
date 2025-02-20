@@ -11,4 +11,5 @@ public interface ShopItem {
     @NotNull ItemStack getItem();
     int getPrice();
     Collection<ShopBuyingType> getShopBuyingTypes();
+    ItemStack toItemStack();
 }

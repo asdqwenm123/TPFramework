@@ -38,10 +38,13 @@ public class ITPFramework implements TPFramework {
     }
 
     public static void onEnable(Plugin plugin) {
+        //----api----
         TPFrameworkLoader.onEnable(plugin);
         ConfigLoader.onEnable(plugin, Config.class);
         EntityLoader.onEnable(plugin);
         HibernateLoader.onEnable(Config.config.MySQL_url, Config.config.MySQL_user, Config.config.MySQL_password);
+
+        //----core----
         EconomyLoader.onEnable(plugin);
 
         Bukkit.getServicesManager().register(TPFramework.class, ITPFramework.getInstance(), plugin, ServicePriority.Normal);

@@ -1,6 +1,5 @@
 package kr.tpmc.economy;
 
-import jakarta.transaction.NotSupportedException;
 import kr.tpmc.config.Config;
 import kr.tpmc.db.EntityLoader;
 import kr.tpmc.db.HibernateLoader;
@@ -61,10 +60,7 @@ public class IEconomy implements Economy {
         return Config.config.economy_name;
     }
 
-    /**
-     * @param s
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public boolean hasAccount(String s) {
         if (!isEnabled()) throw new NotInitializedException("HibernateLoader, TPFrameworkLoader 부터 로드해 주세요");
@@ -91,11 +87,7 @@ public class IEconomy implements Economy {
         return false;
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public boolean hasAccount(String s, String s1) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -106,10 +98,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public double getBalance(String s) {
         if (!isEnabled()) throw new NotInitializedException("HibernateLoader, TPFrameworkLoader 부터 로드해 주세요");
@@ -138,11 +127,7 @@ public class IEconomy implements Economy {
         return economy.getAmount();
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public double getBalance(String s, String s1) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -153,11 +138,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @param v
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public boolean has(String s, double v) {
         if (!isEnabled()) throw new NotInitializedException("HibernateLoader, TPFrameworkLoader 부터 로드해 주세요");
@@ -172,12 +153,7 @@ public class IEconomy implements Economy {
         return getBalance(offlinePlayer) >= v;
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @param v
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public boolean has(String s, String s1, double v) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -188,11 +164,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @param v
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse withdrawPlayer(String s, double v) {
         if (!isEnabled()) throw new NotInitializedException("HibernateLoader, TPFrameworkLoader 부터 로드해 주세요");
@@ -242,12 +214,7 @@ public class IEconomy implements Economy {
         }
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @param v
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse withdrawPlayer(String s, String s1, double v) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -258,11 +225,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @param v
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse depositPlayer(String s, double v) {
         if (!isEnabled()) throw new NotInitializedException("HibernateLoader, TPFrameworkLoader 부터 로드해 주세요");
@@ -306,12 +269,7 @@ public class IEconomy implements Economy {
         return new EconomyResponse(v, economy.getAmount(), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @param v
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse depositPlayer(String s, String s1, double v) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -322,11 +280,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse createBank(String s, String s1) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -362,11 +316,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse isBankOwner(String s, String s1) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -377,11 +327,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public EconomyResponse isBankMember(String s, String s1) {
         throw new NotImplementedException("지원하지 않습니다");
@@ -397,10 +343,7 @@ public class IEconomy implements Economy {
         throw new NotImplementedException("지원하지 않습니다");
     }
 
-    /**
-     * @param s
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public boolean createPlayerAccount(String s) {
         if (!isEnabled()) throw new NotInitializedException("HibernateLoader, TPFrameworkLoader 부터 로드해 주세요");
@@ -427,11 +370,7 @@ public class IEconomy implements Economy {
         return true;
     }
 
-    /**
-     * @param s
-     * @param s1
-     * @deprecated
-     */
+    @Deprecated
     @Override
     public boolean createPlayerAccount(String s, String s1) {
         throw new NotImplementedException("지원하지 않습니다");

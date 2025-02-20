@@ -18,4 +18,16 @@ public class Config {
 
     @Comment(comments = {"economy 에서 쓸 단위명"})
     public String economy_name = "원";
+
+    @Comment(comments = {"(아래의 4개 항목 참고: '\\n'로 엔터(줄바꿈) 가능)","1개 구매 (왼쪽 클릭)"})
+    public String shop_left_click = "[왼쪽 클릭] - 1개 구매";
+
+    @Comment(comments = {"1개 판매 (오른쪽 클릭)"})
+    public String shop_right_click = "[오른쪽 클릭] - 1개 판매";
+
+    @Comment(comments = {"64개 구매 (왼쪽 클릭)"})
+    public String shop_shift_left_click = "[쉬프트 + 왼쪽 클릭] - 64개 구매";
+
+    @Comment(comments = {"1개 구매 (오른쪽 클릭)"})
+    public String shop_shift_right_click = "[쉬프트 + 오른쪽 클릭] - 64개 판매";
 }
