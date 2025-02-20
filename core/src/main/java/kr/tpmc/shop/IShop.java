@@ -10,10 +10,9 @@ public class IShop implements Shop {
     private final Component name;
     private final int line;
     private final int id;
-
     private final HashMap<ShopItemLocation, ShopItem> items;
 
-    protected IShop(Component name, int line, int id) {
+    IShop(Component name, int line, int id, HashMap<ShopItemLocation, ShopItem> items) {
         this.name = name;
         if (line <= 0) {
             throw new ShopException("라인 수는 0 이하가 되면 안 됩니다.");
@@ -22,7 +21,11 @@ public class IShop implements Shop {
         }
         this.line = line;
         this.id = id;
-        this.items = new HashMap<>();
+        this.items = items;
+    }
+
+    IShop(Component name, int line, int id) {
+        this(name, line, id, new HashMap<>());
     }
 
     @Override
@@ -72,5 +75,9 @@ public class IShop implements Shop {
             throw new ShopException("y가 " + line + " 이상 되면 안 됩니다.");
         }
         items.remove(ShopItemLocation.of(x, y));
+    }
+
+    public HashMap<ShopItemLocation, ShopItem> getItems() {
+        return items;
     }
 }

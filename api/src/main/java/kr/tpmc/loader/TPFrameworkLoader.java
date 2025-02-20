@@ -12,8 +12,13 @@ import java.util.Arrays;
 import java.util.jar.JarFile;
 
 public class TPFrameworkLoader {
+    private static boolean loaded = false;
 
     private TPFrameworkLoader() {}
+
+    public static boolean isLoaded() {
+        return loaded;
+    }
 
     public static void onEnable(Plugin plugin) {
         String mainClass = plugin.getPluginMeta().getMainClass();
@@ -49,6 +54,8 @@ public class TPFrameworkLoader {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        loaded = true;
     }
 }
 

@@ -1,33 +1,50 @@
 package kr.tpmc.config;
 
+import kr.tpmc.TPFramework;
 import kr.tpmc.exception.NotInitializedException;
+import kr.tpmc.loader.TPFrameworkLoader;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.jar.JarFile;
 
 public class ConfigLoader {
+    private static boolean loaded = false;
+    private static Plugin plugin = null;
     private static File configFile = null;
+    private static Class<?> configClass = null;
 
     private ConfigLoader() {}
 
+    public static boolean isLoaded() {
+        return loaded;
+    }
 
-    public static void onEnable(Plugin plugin) {
+    public static void onEnable(Plugin plugin, Class<?> clazz) {
+        if (!TPFrameworkLoader.isLoaded()) throw new NotInitializedException("TPFrameworkLoader 부터 로드해 주세요");
+
+        ConfigLoader.plugin = plugin;
         configFile = new File(plugin.getDataFolder(), "config.yml");
+        configClass = clazz;
         LoadType result = load();
         if (result != LoadType.SUCCESS) {
             save();
             load();
         }
+
+        loaded = true;
     }
 
-    public static void onReload(Plugin plugin) {
+    public static void onReload() {
         if (configFile == null) {
             throw new NotInitializedException("configFile");
         } else {
@@ -51,7 +68,7 @@ public class ConfigLoader {
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
-        Class<?> clazz = Config.class;
+        Class<?> clazz = configClass;
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(Comment.class)) {
@@ -60,9 +77,10 @@ public class ConfigLoader {
 
                 if (!config.contains(field.getName())) {
                     try {
-                        config.set(field.getName(), field.get(new Config()));
+                        config.set(field.getName(), field.get(configClass.getConstructor().newInstance()));
                         config.setComments(field.getName(), Arrays.stream(comments).toList());
-                    } catch (IllegalAccessException e) {
+                    } catch (IllegalAccessException | InvocationTargetException | InstantiationException |
+                             NoSuchMethodException e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -107,7 +125,7 @@ public class ConfigLoader {
             return LoadType.NEED_TO_SAVE;
         } else {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-            Class<?> clazz = Config.class;
+            Class<?> clazz = configClass;
             Field[] fields = clazz.getDeclaredFields();
 
             for (Field field : fields) {
@@ -119,7 +137,20 @@ public class ConfigLoader {
             }
 
             //-------------불러 오기 모두 성공----------------
-            Config.config = new Config();
+            AtomicReference<Object> instance = new AtomicReference<>();
+
+            try {
+                for (Field field : configClass.getDeclaredFields()) {
+                    if (field.isAnnotationPresent(Instance.class)) {
+                        instance.set(configClass.getConstructor().newInstance());
+                        field.set(instance.get(), instance.get());
+                    }
+                }
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
             for (Field field : fields) {
                 if (field.isAnnotationPresent(Comment.class)) {
                     try {
@@ -146,7 +177,7 @@ public class ConfigLoader {
                                     value = value.toString().charAt(0);
                                 }
                             }
-                            field.set(Config.config, value);
+                            field.set(instance.get(), value);
                         }
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);

@@ -1,18 +1,26 @@
 package kr.tpmc.db;
 
 import jakarta.persistence.Entity;
-import org.bukkit.event.Listener;
+import kr.tpmc.config.ConfigLoader;
+import kr.tpmc.exception.NotInitializedException;
+import kr.tpmc.loader.TPFrameworkLoader;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.jar.JarFile;
 
 public class EntityLoader {
+    private static boolean loaded = false;
+
     private EntityLoader() {}
 
+    public static boolean isLoaded() {
+        return loaded;
+    }
+
     public static void onEnable(Plugin plugin) {
+        if (!TPFrameworkLoader.isLoaded()) throw new NotInitializedException("TPFrameworkLoader 부터 로드해 주세요");
+
         String mainClass = plugin.getPluginMeta().getMainClass();
         int lastDotIndex = mainClass.lastIndexOf('.');
 
@@ -32,7 +40,7 @@ public class EntityLoader {
                                 String className = entry.getName().replace('/', '.').replace(".class", "");
                                 Class<?> clazz = Class.forName(className);
                                 if (clazz.isAnnotationPresent(Entity.class)) {
-                                    HibernateUtil.entities.add(clazz);
+                                    HibernateLoader.entities.add(clazz);
                                 }
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
@@ -42,5 +50,7 @@ public class EntityLoader {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        loaded = true;
     }
 }

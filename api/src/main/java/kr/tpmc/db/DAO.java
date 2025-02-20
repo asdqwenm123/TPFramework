@@ -7,24 +7,24 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class DAO<T> {
+public class DAO<T, I> {
     public void save(T entity) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.persist(entity);
         tx.commit();
         session.close();
     }
 
-    public T getById(long id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        T entity = (T) session.get(Object.class, id);
+    public T getById(Class<T> clazz, I id) {
+        Session session = HibernateLoader.getSessionFactory().openSession();
+        T entity = session.get(clazz, id);
         session.close();
         return entity;
     }
 
     public List<T> getAll(Class<T> clazz) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
 
         Query<T> query = session.createQuery("from " + clazz.getName(), clazz);
         List<T> result = query.getResultList();
@@ -34,17 +34,17 @@ public class DAO<T> {
     }
 
     public void update(T entity) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.merge(entity);
         tx.commit();
         session.close();
     }
 
-    public void delete(long id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public void delete(Class<T> clazz, I id) {
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        T entity = (T) session.get(Object.class, id);
+        T entity = session.get(clazz, id);
         if (entity != null) {
             session.remove(entity);
             tx.commit();
@@ -54,9 +54,9 @@ public class DAO<T> {
 
     }
 
-    public boolean existsById(long id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        T entity = (T) session.get(Object.class, id);
+    public boolean existsById(Class<T> clazz, I id) {
+        Session session = HibernateLoader.getSessionFactory().openSession();
+        T entity = session.get(clazz, id);
         boolean exists = (entity != null);
         session.close();
 
@@ -64,7 +64,7 @@ public class DAO<T> {
     }
 
     public long count(Class<T> clazz) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Query<Long> query = session.createQuery("select count(*) from " + clazz.getName(), Long.class);
         long count = query.uniqueResult();
         session.close();
@@ -73,7 +73,7 @@ public class DAO<T> {
     }
 
     public void deleteAll(Class<T> clazz) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         MutationQuery query = session.createMutationQuery("delete from " + clazz.getName());
         query.executeUpdate();
@@ -83,8 +83,8 @@ public class DAO<T> {
 
     }
 
-    public List<T> getByIds(Class<T> clazz, List<Long> ids) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public List<T> getByIds(Class<T> clazz, List<I> ids) {
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Query<T> query = session.createQuery("from " + clazz.getName() + " where id in :ids", clazz);
         query.setParameter("ids", ids);
         List<T> result = query.getResultList();
@@ -95,7 +95,7 @@ public class DAO<T> {
     }
 
     public void saveAll(List<T> entities) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         for (T entity : entities) {
             session.persist(entity);

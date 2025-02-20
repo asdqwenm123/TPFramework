@@ -13,6 +13,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://jitpack.io")
     }
 
     dependencies {
@@ -24,6 +25,7 @@ allprojects {
         implementation("com.mysql:mysql-connector-j:9.2.0")
         implementation("org.xerial:sqlite-jdbc:3.49.0.0")
         implementation("com.zaxxer:HikariCP:6.2.1")
+        implementation("com.github.MilkBowl:VaultAPI:1.7")
     }
 
     tasks.assemble {
@@ -50,10 +52,12 @@ tasks.shadowJar {
 }
 
 tasks.reobfJar {
-    dependsOn(tasks.shadowJar)
-    inputJar.set(tasks.shadowJar.flatMap { it.archiveFile })
+    enabled = false
+//    dependsOn(tasks.shadowJar)
+//    inputJar.set(tasks.shadowJar.flatMap { it.archiveFile })
 }
 
 tasks.build {
-    dependsOn(tasks.reobfJar)
+    dependsOn(tasks.shadowJar)
+//    dependsOn(tasks.reobfJar)
 }

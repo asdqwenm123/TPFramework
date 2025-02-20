@@ -2,6 +2,9 @@ package kr.tpmc.shop;
 
 import net.kyori.adventure.text.Component;
 
+import java.util.HashMap;
+import java.util.List;
+
 public interface Shop {
     ShopItem getItem(int x, int y);
     ShopItem getItem(int index);
@@ -10,4 +13,5 @@ public interface Shop {
     Component getName();
     int getLine();
     int getId();
+    HashMap<ShopItemLocation, ShopItem> getItems();
 }

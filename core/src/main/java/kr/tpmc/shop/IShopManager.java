@@ -9,7 +9,7 @@ import java.util.ArrayList;
 //db 만들었기때문에 갈아엎어야함 ㅅㅂ
 public class IShopManager implements ShopManager {
     private static final IShopManager instance = new IShopManager();
-    private static final ArrayList<Shop> shops = new ArrayList<>();
+//    private static final ArrayList<Shop> shops = new ArrayList<>();
 
     private IShopManager() {}
 
@@ -22,8 +22,9 @@ public class IShopManager implements ShopManager {
         if (getShop(name) != null) {
             throw new ShopException("상점이 이미 존재합니다.");
         } else {
-            Shop shop = new IShop(name, line, shops.size());
-            shops.add(shop);
+            Shop shop = new IShop(name, line, (int) ShopDAO.getInstance().count(ShopEntity.class));
+            System.out.println(shop);
+            ShopDAO.getInstance().save(new ShopEntity(shop.getId(), shop.getName(), shop.getLine(), shop.getItems()));
             return shop;
         }
     }
@@ -35,9 +36,10 @@ public class IShopManager implements ShopManager {
 
     @Override
     public Shop getShop(String name) {
-        for (Shop shop : shops) {
-            if (shop.getName().toString().contains(name)) {
-                return shop;
+        for (ShopEntity shop : ShopDAO.getInstance().getAll(ShopEntity.class)) {
+            Shop shop1 = new IShop(shop.getName(), shop.getLine(), shop.getId(), shop.getItems());
+            if (shop1.getName().toString().contains(name)) {
+                return shop1;
             }
         }
         return null;
@@ -45,9 +47,10 @@ public class IShopManager implements ShopManager {
 
     @Override
     public Shop getShop(Component name) {
-        for (Shop shop : shops) {
-            if (shop.getName().equals(name)) {
-                return shop;
+        for (ShopEntity shop : ShopDAO.getInstance().getAll(ShopEntity.class)) {
+            Shop shop1 = new IShop(shop.getName(), shop.getLine(), shop.getId(), shop.getItems());
+            if (shop1.getName().equals(name)) {
+                return shop1;
             }
         }
         return null;
@@ -55,32 +58,33 @@ public class IShopManager implements ShopManager {
 
     @Override
     public Shop getShop(int id) {
-        return shops.get(id);
+        ShopEntity shopEntity = ShopDAO.getInstance().getById(ShopEntity.class, id);
+        return new IShop(shopEntity.getName(), shopEntity.getLine(), shopEntity.getId(), shopEntity.getItems());
     }
 
     @Override
     public void removeShop(Shop shop) {
-        shops.remove(shop);
+        ShopDAO.getInstance().delete(ShopEntity.class, shop.getId());
     }
 
     @Override
     public void removeShop(int id) {
-        shops.remove(id);
+        ShopDAO.getInstance().delete(ShopEntity.class, id);
     }
 
     @Override
     public void removeShop(Component name) {
-        shops.remove(getShop(name));
+        ShopDAO.getInstance().delete(ShopEntity.class, getShop(name).getId());
     }
 
     @Override
     public void removeShop(String name) {
-        shops.remove(getShop(name));
+        ShopDAO.getInstance().delete(ShopEntity.class, getShop(name).getId());
     }
 
     @Override
     public boolean containsShop(Shop shop) {
-        return shops.contains(shop);
+        return ShopDAO.getInstance().existsById(ShopEntity.class, shop.getId());
     }
 
     @Override

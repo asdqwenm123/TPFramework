@@ -1,8 +1,7 @@
 package kr.tpmc.config;
 
 public class Config {
-    Config() {}
-
+    @Instance
     public static Config config;
 
     @Comment(comments = {"MySQL 사용 여부", "true: MySQL 사용", "false: SQLite 사용"})
@@ -16,4 +15,7 @@ public class Config {
 
     @Comment(comments = {"MySQL 사용시 작성", "{비밀 번호}를 작성해 주세요"})
     public String MySQL_password = "{비밀 번호}";
+
+    @Comment(comments = {"economy 에서 쓸 단위명"})
+    public String economy_name = "원";
 }
